@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Monthly Tally</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--good:#166534;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:14px 16px calc(10px + env(safe-area-inset-top));display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:20px;margin:0}.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#eef2ff;color:#3730a3}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;z-index:10;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:none;padding:10px 3px;color:var(--muted);font-size:11px}nav button.active{color:var(--text);font-weight:700}
+main{padding:16px 16px 88px;max-width:900px;margin:auto}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}.metric{font-size:24px;font-weight:800;margin-top:4px}.label{font-size:12px;color:var(--muted)}.section-title{font-size:17px;font-weight:800;margin:20px 0 10px}
+button,.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font-weight:650;color:var(--text);cursor:pointer}.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.danger{color:var(--bad)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:650px;background:#fff}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;white-space:nowrap}th{background:#f9fafb;font-size:12px;color:var(--muted);position:sticky;top:0}
+input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.formgrid label{font-size:12px;color:var(--muted)}.formgrid input{margin-top:5px}
+.hidden{display:none}.positive{color:var(--good);font-weight:700}.negative{color:var(--bad);font-weight:700}.muted{color:var(--muted)}.note{font-size:12px;color:var(--muted);line-height:1.45}.pill{display:inline-block;padding:4px 7px;border-radius:999px;background:#f3f4f6;font-size:11px;margin:2px}
+
+.carousel{overflow:hidden}.carousel-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.carousel-total{font-size:30px;font-weight:850;margin-top:4px}.carousel-controls{display:flex;align-items:center;gap:8px}.carousel-controls button{width:38px;height:38px;padding:0;font-size:22px}.entry-carousel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}.entry-panel{min-width:92%;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.entry-panel h3{margin:0 0 12px}.month-list{display:flex;flex-direction:column;gap:10px}.month-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}.month-card summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.month-card summary::-webkit-details-marker{display:none}.month-card summary span{display:flex;flex-direction:column;gap:2px}.month-card summary small{font-size:11px;color:var(--muted);font-weight:400}.month-card summary strong{font-size:16px}.details-body{padding:0 14px 14px}.cell{min-width:120px;padding:7px;border:1px solid var(--line);border-radius:8px}.cell.small{min-width:80px;width:90px}.cell.wide{min-width:190px}.details-body table input{background:#fff}.attendance-table{min-width:1200px}.attendance-table th:first-child{position:sticky;left:0;z-index:2;background:#f9fafb}.att-cell{width:42px;min-width:42px;padding:7px 3px;border:1px solid var(--line);border-radius:7px;background:#fff}.tiny{min-width:75px;width:75px}.settled{background:#ecfdf5;color:#166534}.settled input{background:#f0fdf4}
+@media(min-width:700px){nav{position:sticky;top:57px;bottom:auto;border-top:0;border-bottom:1px solid var(--line);max-width:900px;margin:auto}.grid{grid-template-columns:repeat(4,1fr)}main{padding-top:22px}.formgrid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><h1>Monthly Tally</h1><span class="badge" id="sourceBadge">Historical data loaded</span></header>
+<nav id="nav">
+<button data-page="dashboard" class="active">⌂<br>Dashboard</button>
+<button data-page="work">▦<br>Daily Work</button>
+<button data-page="tally">₹<br>Monthly Tally</button>
+<button data-page="people">♙<br>Attendance & wages</button>
+<button data-page="accounts">▤<br>Accounts</button>
+</nav>
+<main>
+<section id="dashboard"></section>
+<section id="work" class="hidden"></section>
+<section id="tally" class="hidden"></section>
+<section id="people" class="hidden"></section>
+<section id="accounts" class="hidden"></section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
